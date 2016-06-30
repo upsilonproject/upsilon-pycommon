@@ -2,4 +2,6 @@
 *.zip
 .buildid
 bin/*.zip
+pkg
+pkg/*.zip
 **/*.swp
