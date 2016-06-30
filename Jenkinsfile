@@ -8,6 +8,6 @@ node {
 	archive 'pkg/*.zip'
 
 	for (Object artifact : currentBuild.rawBuild.getArtifacts()) {
-		println "pkg: ${artifact}"
+		sh "curl -X POST -d @${artifact} http://ci.teratan.net/repositories/upload.php"
 	}
 }
