@@ -1,3 +1,5 @@
+#!groovy
+
 node {
 	stage "build"
 	checkout scm
@@ -5,7 +7,7 @@ node {
 
 	archive 'pkg/*.zip'
 
-	for (Object artitact : currentBuild.rawBuild.getArtifacts()) {
+	for (Object artifact : currentBuild.rawBuild.getArtifacts()) {
 		println "pkg: ${artifact}"
 	}
 }
