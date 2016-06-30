@@ -5,7 +5,7 @@ node {
 
 	archive 'pkg/*.zip'
 
-	for (Object artitact : currentBuild.getArtifacts()) {
+	for (Object artitact : currentBuild.rawBuild.getArtifacts()) {
 		println "pkg: ${artifact}"
 	}
 }
