@@ -9,5 +9,6 @@ node {
 
 	for (Run.Artifact artifact : currentBuild.rawBuild.getArtifacts()) {
 		String artifactPath = artifact.getHref()
+		println "Artifact: ${artifactPath} "
 	}
 }
