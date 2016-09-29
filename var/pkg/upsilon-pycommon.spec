@@ -1,4 +1,4 @@
-%include SPECS/.upsilon-pycommon.spec
+%include SPECS/.upsilon-pycommon.rpmmacro
 
 Name:		upsilon-pycommon
 Version:	%{version_formatted_short}
