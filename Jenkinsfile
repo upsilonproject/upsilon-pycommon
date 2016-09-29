@@ -26,7 +26,7 @@ def prepareEnv() {
     sh "find ${env.WORKSPACE}"                                                     
                                                                                    
     sh 'mkdir -p SPECS SOURCES'                                                    
-    sh "cp build/distributions/*.zip SOURCES/upsilon-pycommon.zip"                      
+    sh "cp pkg/*.zip SOURCES/upsilon-pycommon.zip"                      
 }  
 
 def buildRpm(dist) {                                                               
