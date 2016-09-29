@@ -7,7 +7,7 @@ buildid -qf rpmmacro -W .upsilon-pycommon.rpmmacro
 
 BUILD_DIR=upsilon-pycommon-`buildid -k tag`
 mkdir -p $BUILD_DIR
-cp -r .buildid src/*.py pkg var .upsilon-pycommon.rpmmacro $BUILD_DIR/
+cp -r .buildid src pkg var .upsilon-pycommon.rpmmacro $BUILD_DIR/
 
 zip -r pkg/upsilon-pycommon.zip $BUILD_DIR/
 
