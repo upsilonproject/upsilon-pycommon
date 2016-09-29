@@ -18,6 +18,17 @@ node {
 	stash includes:"pkg/*.zip", name: "binaries"
 }
 
+def prepareEnv() {                                                                 
+    unstash 'binaries'                                                             
+                                                                                   
+    env.WORKSPACE = pwd()                                                          
+                                                                                   
+    sh "find ${env.WORKSPACE}"                                                     
+                                                                                   
+    sh 'mkdir -p SPECS SOURCES'                                                    
+    sh "cp build/distributions/*.zip SOURCES/upsilon-pycommon.zip"                      
+}  
+
 def buildRpm(dist) {                                                               
     deleteDir()                                                                    
                                                                                    
