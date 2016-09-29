@@ -5,3 +5,4 @@ bin/*.zip
 pkg
 pkg/*.zip
 **/*.swp
+*.rpmmacro
