@@ -49,3 +49,7 @@ node {
 node {
 	buildRpm("el6")
 }
+
+node {
+	buildRpm("fc24")
+}
