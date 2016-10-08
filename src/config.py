@@ -11,11 +11,4 @@ def commonArgumentParser():
 
 	return parser
 
-def error(message = None, e = None):
-	print "[ERROR]", message
-
-	if not e == None:
-		print "Exception:", str(e)
-
-	sys.exit(1)
 
