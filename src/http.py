@@ -1,4 +1,8 @@
 import httplib
+import socket
+import sys
+from urlparse import urlparse
+from config import error
 
 def getHttpClient(ssl, address, port = 80, timeout = 10):
 	if ssl:
