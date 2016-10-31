@@ -3,6 +3,7 @@ import uuid
 
 class Connection():
     messageHandlers = []
+    messageTypeHandlers = {}
 
     def __init__(self, host = None, queue = None, exchange = "ex_upsilon", callback = None):
         if host == None:
@@ -38,10 +39,20 @@ class Connection():
     def bind(self, key):
         self.channel.queue_bind(queue = self.queue, exchange = self.exchange, routing_key = key)
 
+    def addMessageTypeHandler(self, msgType, callback):
+        self.messageTypeHandlers[msgType] = callback
+
     def addMessageHandler(self, callback):
         self.messageHandlers.append(callback)
 
-    def callbackHelper(self, channel, delivery, headers, body):
+    def callbackHelper(self, channel, delivery, properties, body):
+        if "upsilon-msg-type" in properties.headers:
+            msgType = properties.headers["upsilon-msg-type"]
+
+            if msgType in self.messageTypeHandlers:
+                callback = self.messageTypeHandlers[msgType]
+                callback(channel, delivery, properties, body)
+
         for callback in self.messageHandlers:
             callback(channel, delivery, headers, body)
         
