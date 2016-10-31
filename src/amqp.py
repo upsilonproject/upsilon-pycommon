@@ -44,8 +44,6 @@ class Connection():
         if callback != None:
             self.addMessageHandler(callback)
 
-        if replyToPings:
-
         self.channel.basic_consume(self.callbackHelper, queue = self.queue)
 
     def setPingReply(self, identifier = "???", version = "?.?.?", traits = "???"):
