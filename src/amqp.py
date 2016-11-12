@@ -51,6 +51,8 @@ class Connection():
         self.nodeVersion = version;
         self.nodeType = traits;
 
+        self.bind("upsilon.cmds")
+
         self.addMessageTypeHandler("REQ_NODE_SUMMARY", self.onPing)
 
     def onPing(self, channel, delivery, properties, body):
