@@ -1,7 +1,9 @@
 import urllib2
 import sys
 import json
-from pynag.Plugins import OK, WARNING, CRITICAL
+
+# Taken from PyNag.
+OK, WARNING, CRITICAL, UNKNOWN = 0, 1, 2, 3
 
 def req(auth_url, auth_req_data):
 		auth_req = urllib2.Request(auth_url, data=auth_req_data)
@@ -16,6 +18,17 @@ def reqJson(url, data = None):
 
 		return json.loads(req(url, json.dumps(data)));
 
+def exitOk(metadata = None, message = None):
+        exit(OK, metadata, message)
+
+def exitWarning(metadata = None, message = None):
+        exit(WARNING, metadata, message)
+
+def exitCritical(metadata = None, message = None):
+        exit(CRITICAL, metadata, message)
+
+def exitUnknown(metadata = None, message = None):
+        exit(UNKNOWN, metadata, message)
 
 def exit(status = OK, metadata = None, message = None):
 	if not metadata == None:
