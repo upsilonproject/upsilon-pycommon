@@ -46,4 +46,8 @@ class clsmetadata(dict):
 		self['subresults'].append({"name": name, "karma": karma, "comment": comment});
 
 	def addMetric(self, name, value, karma = "GOOD"):
-		self['metrics'].append({"name": name, "value": value, "karma": karma})
+                metric ={"name": name, "value": value, "karma": karma}
+
+		self['metrics'].append(metric)
+
+                return metric
