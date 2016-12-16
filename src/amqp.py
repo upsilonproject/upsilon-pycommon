@@ -51,6 +51,8 @@ class Connection():
         self.nodeVersion = version;
         self.nodeType = traits;
 
+        self.bind("upsilon.cmds")
+
         self.addMessageTypeHandler("REQ_NODE_SUMMARY", self.onPing)
 
     def onPing(self, channel, delivery, properties, body):
@@ -112,7 +114,7 @@ def newChannel(host, queue, exchange = "ex_upsilon"):
         if not amqpConnection.is_open:
             raise Exception("Could not open a connection")
 
-        print "Connection open"
+        print "Connection open to", host, ' using the', exchange, 'exchange'
 
 	channel = amqpConnection.channel();
 	channel.queue_declare(queue = queue, durable = False, auto_delete = True)
