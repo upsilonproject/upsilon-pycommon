@@ -1,5 +1,6 @@
 import pika
 import uuid
+import logger
 
 class UpsilonMessage():
     routingKey = "*"
@@ -44,7 +45,11 @@ class Connection():
         if callback != None:
             self.addMessageHandler(callback)
 
+        self.channel._impl.add_on_close_callback(self.onClose)
         self.channel.basic_consume(self.callbackHelper, queue = self.queue)
+
+    def onClose(self, channel, reply_code, reply_text):
+        logger.log("AMQP Connection closed on channel " + str(channel) + ' . Reply code: ' + str(reply_code) + '. Reply text: ' + str(reply_text))
 
     def setPingReply(self, identifier = "???", version = "?.?.?", traits = "???"):
         self.nodeIdentifier = identifier;
@@ -73,10 +78,8 @@ class Connection():
         self.channel.basic_publish(exchange = self.exchange, routing_key = msg.routingKey, properties = msg.getProperties(), body = msg.body)
 
     def close(self):
-        print "closing"
         self.channel.stop_consuming()
         self.channel.close()
-        print "closed"
 
     def bindEverything(self):
         bindEverything(self.channel, self.queue, self.exchange);
@@ -93,16 +96,20 @@ class Connection():
         self.messageHandlers.append(callback)
 
     def callbackHelper(self, channel, delivery, properties, body):
-        if "upsilon-msg-type" in properties.headers:
-            msgType = properties.headers["upsilon-msg-type"]
-            
-            if msgType in self.messageTypeHandlers:
-                callback = self.messageTypeHandlers[msgType]
-                callback(channel, delivery, properties, body)
+        try:
+            if "upsilon-msg-type" in properties.headers:
+                msgType = properties.headers["upsilon-msg-type"]
+                
+                if msgType in self.messageTypeHandlers:
+                    callback = self.messageTypeHandlers[msgType]
+                    callback(channel, delivery, properties, body)
 
-        for callback in self.messageHandlers:
-            callback(channel, delivery, properties, body)
-        
+            for callback in self.messageHandlers:
+                callback(channel, delivery, properties, body)
+        except Exception as e:
+            print "Exception in callback helper"
+            print e
+
     def startConsuming(self):
         self.channel.start_consuming()
         print "finished consuming"
@@ -114,7 +121,7 @@ def newChannel(host, queue, exchange = "ex_upsilon"):
         if not amqpConnection.is_open:
             raise Exception("Could not open a connection")
 
-        print "Connection open to", host, ' using the', exchange, 'exchange'
+        logger.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
 
 	channel = amqpConnection.channel();
 	channel.queue_declare(queue = queue, durable = False, auto_delete = True)
