@@ -18,6 +18,32 @@ class UpsilonMessage():
             reply_to = self.replyTo
             );
 
+class Heartbeater:
+    amqp = None
+    identifier = None
+    version = None
+    traits = None
+    
+    def setIdentitiy(self, identifier = None, version = None, traits = None):
+        self.identifier = identifier
+        self.version = version
+        self.traits = traits
+
+    def setAmqpConnection(self, amqpConnection):
+        self.amqp = amqpConnection
+
+    def tick(self):
+        while True:
+            message = UpsilonMessage("HEARTBEAT");
+            message.headers["node-identifier"] = self.identifier
+            message.headers["node-version"] = self.version
+            message.headers["node-type"] = self.traits
+
+            self.amqp.publishMessage(message)
+
+    def start(self):
+        Thread(target = self.tick).start()
+
 
 class Connection():
     messageHandlers = []
@@ -59,6 +85,13 @@ class Connection():
         self.bind("upsilon.cmds")
 
         self.addMessageTypeHandler("REQ_NODE_SUMMARY", self.onPing)
+
+    def startHeartbeater(self):
+        heartbeater = Heartbeater()
+        heartbeater.setIdentitiy(self.nodeIdentifier, self.nodeVersion, self.nodeType);
+        heartbeater.setAmqpConnection(self)
+        heartbeater.start()
+
 
     def onPing(self, channel, delivery, properties, body):
         msg = UpsilonMessage("RES_NODE_SUMMARY")
