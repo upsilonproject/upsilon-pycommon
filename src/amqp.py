@@ -36,6 +36,8 @@ class Heartbeater:
 
     def tick(self):
         while True:
+            logger.info("Sending heartbeat with identifier: " + self.identifier)
+
             message = UpsilonMessage("HEARTBEAT");
             message.headers["node-identifier"] = self.identifier
             message.headers["node-version"] = self.version
