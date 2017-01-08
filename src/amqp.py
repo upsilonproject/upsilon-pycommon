@@ -1,6 +1,7 @@
 import pika
 import uuid
 import logger
+from threading import Thread
 
 class UpsilonMessage():
     routingKey = "*"
