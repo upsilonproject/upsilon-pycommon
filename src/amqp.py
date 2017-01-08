@@ -2,6 +2,7 @@ import pika
 import uuid
 import logger
 from threading import Thread
+from time import sleep
 
 class UpsilonMessage():
     routingKey = "*"
@@ -41,6 +42,8 @@ class Heartbeater:
             message.headers["node-type"] = self.traits
 
             self.amqp.publishMessage(message)
+
+            sleep(60)
 
     def start(self):
         Thread(target = self.tick).start()
