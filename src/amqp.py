@@ -35,6 +35,7 @@ class Heartbeater:
     def tick(self):
         while True:
             message = UpsilonMessage("HEARTBEAT");
+            message.routingKey = "upsilon.node.heartbeats"
             message.headers["node-identifier"] = self.identifier
             message.headers["node-version"] = self.version
             message.headers["node-type"] = self.traits
