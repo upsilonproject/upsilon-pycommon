@@ -1,5 +1,7 @@
 #!python
 
+import sys
+
 def log(message, level = "INFO"):
     print "[", level, "] ", message
 
