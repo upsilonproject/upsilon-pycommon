@@ -40,6 +40,7 @@ class Heartbeater:
                 logger.info("Sending heartbeat with identifier: " + self.identifier)
 
                 message = UpsilonMessage("HEARTBEAT");
+                message.routingKey = "upsilon.node.heartbeats"
                 message.headers["node-identifier"] = self.identifier
                 message.headers["node-version"] = self.version
                 message.headers["node-type"] = self.traits
