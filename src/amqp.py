@@ -213,12 +213,12 @@ class Connection():
             for callback in self.messageHandlers:
                 callback(channel, delivery, properties, body)
         except Exception as e:
-            print "Exception in callback helper"
+            logger.error("Exception in callback helper")
             print e
 
     def startConsuming(self):
         self.channel.start_consuming()
-        print "finished consuming"
+        logger.debug("finished consuming")
 
 def newChannel(host, queue, exchange = "ex_upsilon"):
     params = pika.ConnectionParameters(host = host)
