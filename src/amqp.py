@@ -36,17 +36,21 @@ class Heartbeater:
 
     def tick(self):
         while True:
-            logger.info("Sending heartbeat with identifier: " + self.identifier)
+            try: 
+                logger.info("Sending heartbeat with identifier: " + self.identifier)
 
-            message = UpsilonMessage("HEARTBEAT");
-            message.routingKey = "upsilon.node.heartbeats"
-            message.headers["node-identifier"] = self.identifier
-            message.headers["node-version"] = self.version
-            message.headers["node-type"] = self.traits
+                message = UpsilonMessage("HEARTBEAT");
+                message.routingKey = "upsilon.node.heartbeats"
+                message.headers["node-identifier"] = self.identifier
+                message.headers["node-version"] = self.version
+                message.headers["node-type"] = self.traits
 
-            self.amqp.publishMessage(message)
+                self.amqp.publishMessage(message)
 
-            sleep(60)
+                sleep(60)
+            except Exception as e:
+                logger.error("Error in heartbeater", e)
+                
 
     def start(self):
         Thread(target = self.tick).start()
