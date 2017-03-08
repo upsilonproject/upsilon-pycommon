@@ -111,7 +111,7 @@ class Connection():
 
         return amqpConnection
 
-    def newChannel(self, host):
+    def newChannel(self):
         channel = self.conn.channel();
         channel.queue_declare(queue = self.queue, durable = False, auto_delete = True)
 

@@ -2,6 +2,8 @@
 rm -rf pkg
 mkdir -p pkg
 
+python -m unittest discover tst/ -v
+
 buildid -n
 buildid -qf rpmmacro -W .upsilon-pycommon.rpmmacro
 
