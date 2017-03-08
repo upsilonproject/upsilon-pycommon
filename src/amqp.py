@@ -58,11 +58,25 @@ class Heartbeater:
 class ConsumeTimeout(Exception):
     pass
 
+class UpsilonDelivery(object):
+    channel = None
+    delivery = None
+    properties = None
+    body = None
+
+    def __init__(self, channel, delivery, properties, body):
+        self.channel = channel
+        self.delivery = delivery
+        self.properties = properties
+        self.body = body
+
 class Connection():
     messageHandlers = []
     messageTypeHandlers = {}
 
     consumeTimeout = 0
+
+    expectedMessage = ()
 
     nodeIdentifier = "???";
     nodeVersion = "?.?.?"
@@ -175,6 +189,17 @@ class Connection():
 
     def addMessageHandler(self, callback):
         self.messageHandlers.append(callback)
+
+    def onExpectedMessage(self, channel, delivery, properties, body):
+        self.expectedMessage = UpsilonDelivery(channel, delivery, properties, body)
+        self.close()
+
+    def consumeUntilMessage(self, msgType): 
+        self.addMessageTypeHandler(msgType, self.onExpectedMessage)
+
+        self.startConsuming()
+
+        return self.expectedMessage
 
     def callbackHelper(self, channel, delivery, properties, body):
         try:
