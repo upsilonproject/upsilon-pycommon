@@ -89,9 +89,9 @@ class Connection():
         self.host = host
 
         if queue == None:
-            queue = str(uuid.uuid4())
+            queue = "untitled"
 
-        self.queue = queue
+        self.queue = queue + '-' + str(uuid.uuid4())
         self.exchange = exchange
 
         if callback != None:
