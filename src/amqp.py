@@ -74,7 +74,6 @@ class Connection():
             queue = str(uuid.uuid4())
 
         self.queue = queue
-
         self.exchange = exchange
 
         if callback != None:
@@ -90,12 +89,11 @@ class Connection():
         })
     
     def connect(self): 
-        self.conn = self.newConn(host, queue, exchange)
+        self.conn = self.newConn(self.host, self.queue, self.exchange)
         self.channel = self.newChannel()
  
         self.channel._impl.add_on_close_callback(self.onClose)
         self.channel.basic_consume(self.callbackHelper, queue = self.queue)
-
      
     def newConn(self, host, queue, exchange = "ex_upsilon"):
         params = pika.ConnectionParameters(host = host)
