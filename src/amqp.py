@@ -111,9 +111,9 @@ class Connection():
 
         return amqpConnection
 
-    def newChannel(host, queue, exchange = "ex_upsilon"):
+    def newChannel(host):
         channel = self.conn.channel();
-        channel.queue_declare(queue = queue, durable = False, auto_delete = True)
+        channel.queue_declare(queue = self.queue, durable = False, auto_delete = True)
 
         return channel
 
