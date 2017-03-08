@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python -m unittest discover tst/ -v
+PYTHONPATH=`pwd` pytest -t tests/

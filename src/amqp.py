@@ -55,18 +55,20 @@ class Heartbeater:
     def start(self):
         Thread(target = self.tick).start()
 
+class ConsumeTimeout(Exception):
+    pass
 
 class Connection():
     messageHandlers = []
     messageTypeHandlers = {}
 
-    timeouts = []
+    consumeTimeout = 0
 
     nodeIdentifier = "???";
     nodeVersion = "?.?.?"
     nodeType = "???";
 
-    def __init__(self, host = None, queue = None, exchange = "ex_upsilon", callback = None, connect = True):
+    def __init__(self, host = None, queue = None, exchange = "ex_upsilon", callback = None, connect = True, consumeTimeout = 0):
         if host == None:
             host = "upsilon"
 
@@ -81,14 +83,17 @@ class Connection():
         if callback != None:
             self.addMessageHandler(callback)
 
+        if consumeTimeout > 0:
+            self.consumeTimeout = consumeTimeout
+
         if connect:
             self.connect()
 
-    def addTimeout(self, seconds, callback):
-        self.timeouts.append({
-            "seconds": seconds,
-            "callback": callback
-        })
+    def setConsumeTimeout(self, seconds):
+        self.consumeTimeout = seconds
+
+    def onConsumeTimeout(self):
+        raise ConsumeTimeout("Consume timeout")
     
     def connect(self): 
         self.conn = self.newConn(self.host, self.queue, self.exchange)
@@ -101,8 +106,8 @@ class Connection():
         params = pika.ConnectionParameters(host = host)
         amqpConnection = pika.BlockingConnection(params)
 
-        for timeout in self.timeouts:
-            amqpConnection.add_timeout(timeout['seconds'], timeout['callback'])
+        if self.consumeTimeout > 0:
+            amqpConnection.add_timeout(self.consumeTimeout, self.onConsumeTimeout)
 
         if not amqpConnection.is_open:
             raise Exception("Could not open a connection")
