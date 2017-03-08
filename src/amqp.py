@@ -60,7 +60,7 @@ class Connection():
     nodeVersion = "?.?.?"
     nodeType = "???";
 
-    def __init__(self, host = None, queue = None, exchange = "ex_upsilon", callback = None):
+    def __init__(self, host = None, queue = None, exchange = "ex_upsilon", callback = None, connect = True):
         if host == None:
             host = "upsilon"
 
@@ -73,13 +73,45 @@ class Connection():
 
         self.exchange = exchange
 
-        self.channel = newChannel(host, queue, exchange)
-
         if callback != None:
             self.addMessageHandler(callback)
 
+        if connect:
+            self.connect()
+
+    def addTimeout(self, seconds, callback):
+        self.timeouts.append({
+            "seconds": seconds,
+            "callback": callback
+        })
+    
+    def connect(self): 
+        self.conn = self.newConn(host, queue, exchange)
+        self.channel = self.newChannel()
+ 
         self.channel._impl.add_on_close_callback(self.onClose)
         self.channel.basic_consume(self.callbackHelper, queue = self.queue)
+
+     
+    def newConn(self, host, queue, exchange = "ex_upsilon"):
+        params = pika.ConnectionParameters(host = host)
+        amqpConnection = pika.BlockingConnection(params)
+
+        for timeout in self.timeouts:
+            amqpConnection.add_timeout(timeout['seconds'], timeout['callback'])
+
+        if not amqpConnection.is_open:
+            raise Exception("Could not open a connection")
+
+        logger.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
+
+        return amqpConnection
+
+    def newChannel(host, queue, exchange = "ex_upsilon"):
+        channel = self.conn.channel();
+        channel.queue_declare(queue = queue, durable = False, auto_delete = True)
+
+        return channel
 
     def onClose(self, channel, reply_code, reply_text):
         logger.log("AMQP Connection closed on channel " + str(channel) + ' . Reply code: ' + str(reply_code) + '. Reply text: ' + str(reply_text))
@@ -155,18 +187,18 @@ class Connection():
         print "finished consuming"
 
 def newChannel(host, queue, exchange = "ex_upsilon"):
-        params = pika.ConnectionParameters(host = host)
-        amqpConnection = pika.BlockingConnection(params)
+    params = pika.ConnectionParameters(host = host)
+    amqpConnection = pika.BlockingConnection(params)
 
-        if not amqpConnection.is_open:
-            raise Exception("Could not open a connection")
-
-        logger.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
-
-	channel = amqpConnection.channel();
-	channel.queue_declare(queue = queue, durable = False, auto_delete = True)
-
-	return channel
+    if not amqpConnection.is_open:
+        raise Exception("Could not open a connection")
+    
+    logger.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
+    
+    channel = amqpConnection.channel();
+    channel.queue_declare(queue = queue, durable = False, auto_delete = True)
+    
+    return channel
 
 def bindEverything(channel, queue, exchange = "ex_upsilon"):
 	channel.queue_bind(queue = queue, exchange = exchange, routing_key = '*')
