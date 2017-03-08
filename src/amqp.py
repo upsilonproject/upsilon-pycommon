@@ -60,7 +60,7 @@ class Connection():
     messageHandlers = []
     messageTypeHandlers = {}
 
-    timeouts = {}
+    timeouts = []
 
     nodeIdentifier = "???";
     nodeVersion = "?.?.?"
