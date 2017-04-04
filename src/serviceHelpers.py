@@ -32,7 +32,7 @@ def exitUnknown(metadata = None, message = None):
 
 def exit(status = OK, metadata = None, message = None):
 	if not metadata == None:
-		print "<json>%s</json>" % json.dumps(metadata)
+		print "<json>%s</json>" % json.dumps(metadata, indent = 4)
 
 	print message
 	sys.exit(status);
