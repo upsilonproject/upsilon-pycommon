@@ -213,8 +213,7 @@ class Connection():
             for callback in self.messageHandlers:
                 callback(channel, delivery, properties, body)
         except Exception as e:
-            logger.error("Exception in callback helper")
-            print e
+            logger.error("Exception in callback helper: " + str(e))
 
     def startConsuming(self):
         self.channel.start_consuming()
