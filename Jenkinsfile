@@ -1,6 +1,6 @@
 #!groovy
 
-@Library("jenkins-common") _
+@Library("jenkins-common@master") _
 
 properties(                                                                        
     [                                                                              
