@@ -45,10 +45,6 @@ def buildRpm(dist) {
 }  
 
 node {
-	discombobulate("testinguser", "You look rather fabulous today.")
-}
-
-node {
 	buildRpm("el7")
 }
 
