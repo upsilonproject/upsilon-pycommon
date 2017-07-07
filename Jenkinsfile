@@ -45,10 +45,7 @@ def buildRpm(dist) {
 }  
 
 node {
-	discombobulate {
-		username = "test"
-		message = "blat"
-	}
+	discombobulate("testinguser", "You look rather fabulous today.")
 }
 
 node {
