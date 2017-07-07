@@ -43,6 +43,13 @@ def buildRpm(dist) {
 }  
 
 node {
+	discombobulate {
+		username = "test"
+		message = "blat"
+	}
+}
+
+node {
 	buildRpm("el7")
 }
 
