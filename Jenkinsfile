@@ -1,5 +1,7 @@
 #!groovy
 
+@Library("jenkins-common")
+
 properties(                                                                        
     [                                                                              
         [                                                                          
