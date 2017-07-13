@@ -12,7 +12,7 @@ URL:		http://upsilon-project.co.uk
 Source0:	upsilon-pycommon.zip
 
 BuildRequires:	python
-Requires:	python PyYAML MySQL-python python-prettytable
+Requires:	python PyYAML MySQL-python python-prettytable python2-pika
 
 %description
 Monitoring software
