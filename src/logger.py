@@ -2,26 +2,28 @@
 
 import sys
 
-def log(message, level = "INFO"):
-    print "[", level, "] ", message
+def log(args, level = "INFO"):
+  print "[", level, "]", 
+  
+  for o in args:
+    print str(o),
+    
+  print
 
-def debug(message = None):
-    log(message, "DEBG")
+def debug(*args):
+  log(args, "DEBG")
 
-def info(message = None):
-    log(message, "INFO")
+def info(*args):
+  log(args, "INFO")
 
-def warn(message = None):
-    log(message, "WARN")
+def warn(*args):
+  log(args, "WARN")
 
-def warning(message = None):
-    warn(message)
+def warning(*args):
+  warn(args)
 
-def error(message = None, e = None):
-	log(message, "EROR")
-
-	if not e == None:
-		print "Exception:", str(e)
+def error(*args):
+	log(args, "EROR")
 
 	sys.exit(1)
 
