@@ -5,9 +5,12 @@ import sys
 def log(args, level = "INFO"):
   print "[", level, "]", 
   
-  for o in args:
-    print str(o),
-    
+  if type(args) == str:
+    print args,
+  else: 
+    for o in args:
+      print str(o),
+        
   print
 
 def debug(*args):
