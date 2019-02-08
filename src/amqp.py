@@ -14,7 +14,7 @@ class UpsilonMessage():
         if msgType != None:
             self.headers["upsilon-msg-type"] = msgType
 
-    def getProperties(self): 
+    def getProperties(self):
         return pika.BasicProperties(
             headers = self.headers,
             reply_to = self.replyTo
@@ -78,9 +78,9 @@ class Connection():
 
     expectedMessage = ()
 
-    nodeIdentifier = "???";
+    nodeIdentifier = "???"
     nodeVersion = "?.?.?"
-    nodeType = "???";
+    nodeType = "???"
 
     def __init__(self, host = None, queue = None, exchange = "ex_upsilon", callback = None, connect = True, consumeTimeout = 0):
         if host == None:
