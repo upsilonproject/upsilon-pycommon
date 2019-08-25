@@ -50,14 +50,14 @@ class clsmetadata(dict):
         self['entities'] = list()
 
     def addSubresult(self, name, karma = "GOOD", value = "", comment = None):
-        return self.addFact(name, karma, value, comment);
+        return self.addEntity(name, karma, value, comment);
 
     def addEntity(self, name, type = "", karma = "GOOD", value = "", comment = None):
-        fact = {"name": name, "type": type, "karma": karma, "value": value, "comment": comment, "properties": dict()}
+        entity = {"name": name, "type": type, "karma": karma, "value": value, "comment": comment, "properties": dict()}
 
-        self['entities'].append(fact);
+        self['entities'].append(entity);
 
-        return fact;
+        return entity;
 
     def addMetric(self, name, value, karma = "GOOD"):
         metric = {"name": name, "value": value, "karma": karma}
