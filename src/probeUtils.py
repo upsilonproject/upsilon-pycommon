@@ -50,10 +50,10 @@ class clsmetadata(dict):
         self['entities'] = list()
 
     def addSubresult(self, name, karma = "GOOD", value = "", comment = None):
-        return self.addEntity(name, type, karma, value, comment);
+        return self.addEntity(name, classType, karma, value, comment);
 
-    def addEntity(self, name, type = "", karma = "GOOD", value = "", comment = None):
-        entity = {"name": name, "type": type, "karma": karma, "value": value, "comment": comment, "properties": dict()}
+    def addEntity(self, name, classType = "", karma = "GOOD", value = "", comment = None):
+        entity = {"name": name, "type": classType, "karma": karma, "value": value, "comment": comment, "properties": dict()}
 
         self['entities'].append(entity);
 
