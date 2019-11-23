@@ -53,5 +53,5 @@ node {
 }
 
 node {
-	buildRpm("fc24")
+	buildRpm("fedora")
 }
