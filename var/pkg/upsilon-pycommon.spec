@@ -1,6 +1,5 @@
 %include SPECS/.upsilon-pycommon.rpmmacro
 
-        cd docs
 Name:		upsilon-pycommon
 Version:	%{version_formatted_short}
 Release:	%{timestamp}.%{?dist}
