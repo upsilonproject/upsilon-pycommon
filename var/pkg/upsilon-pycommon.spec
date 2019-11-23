@@ -1,5 +1,6 @@
 %include SPECS/.upsilon-pycommon.rpmmacro
 
+        cd docs
 Name:		upsilon-pycommon
 Version:	%{version_formatted_short}
 Release:	%{timestamp}.%{?dist}
@@ -12,7 +13,7 @@ URL:		http://upsilon-project.co.uk
 Source0:	upsilon-pycommon.zip
 
 BuildRequires:	python
-Requires:	python PyYAML MySQL-python python-prettytable python2-pika
+Requires:	python2 PyYAML MySQL-python python2-prettytable python2-pika
 
 %description
 Monitoring software
