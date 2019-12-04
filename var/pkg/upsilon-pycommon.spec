@@ -12,7 +12,12 @@ URL:		http://upsilon-project.co.uk
 Source0:	upsilon-pycommon.zip
 
 BuildRequires:	python
+
+%if 0%{?fedora} >= 28
 Requires:	python2 python2-pyyaml python2-mysql python2-prettytable python2-pika
+%else
+Requires:	python2 python2-pyyaml python-mysql python2-prettytable python2-pika
+%endif
 
 %description
 Monitoring software
