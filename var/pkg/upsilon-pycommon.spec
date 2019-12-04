@@ -13,14 +13,12 @@ Source0:	upsilon-pycommon.zip
 
 BuildRequires:	python
 
-%if 0%{?rhel} || 0%{?el7}
+%if 0%{?el7}
 Requires:	python2 python2-pyyaml MySQL-python python-prettytable python2-pika
 %endif
 
 %if 0%{?fedora} >= 28
 Requires:	python2 python2-pyyaml python2-mysql python2-prettytable python2-pika
-%else
-Requires:	python2 python2-pyyaml python-mysql python2-prettytable python2-pika
 %endif
 
 %description
