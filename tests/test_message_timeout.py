@@ -14,4 +14,4 @@ class BasicConnection(unittest.TestCase):
         try:
             conn.startConsuming()
         except amqp.ConsumeTimeout:
-            print "consume timeout"
+            print("consume timeout")

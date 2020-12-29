@@ -2,7 +2,7 @@
 
 Name:		upsilon-pycommon
 Version:	%{version_formatted_short}
-Release:	%{timestamp}.%{?dist}
+Release:	%{timestamp}%{?dist}
 Summary:	Monitoring Software
 BuildArch:	noarch
 
@@ -14,11 +14,11 @@ Source0:	upsilon-pycommon.zip
 BuildRequires:	python
 
 %if 0%{?el7}
-Requires:	python2 python2-pyyaml MySQL-python python-prettytable python2-pika
+Requires:	python3 python3-pyyaml MySQL-python python-prettytable python3-pika
 %endif
 
 %if 0%{?fedora} >= 28
-Requires:	python2 python2-pyyaml python2-mysql python2-prettytable python2-pika
+Requires:	python3 python3-pyyaml python3-mysql python3-prettytable python3-pika python3-google-api-client
 %endif
 
 %description
@@ -30,8 +30,8 @@ rm -rf $RPM_BUILD_DIR/*
 
 
 %build
-mkdir -p %{buildroot}/usr/lib/python2.7/site-packages/upsilon
-cp src/* %{buildroot}/usr/lib/python2.7/site-packages/upsilon
+mkdir -p %{buildroot}/%{python_sitelib}/upsilon
+cp src/*.py %{buildroot}/%{python_sitelib}/upsilon
 
 %files
-/usr/lib/python2.7/site-packages/upsilon/*
+%{python_sitelib}/upsilon/*

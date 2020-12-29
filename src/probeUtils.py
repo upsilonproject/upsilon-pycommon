@@ -1,4 +1,4 @@
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import sys
 from subprocess import Popen, PIPE
 import json
@@ -7,8 +7,8 @@ import json
 OK, WARNING, CRITICAL, UNKNOWN = 0, 1, 2, 3
 
 def req(auth_url, auth_req_data):
-        auth_req = urllib2.Request(auth_url, data=auth_req_data)
-        auth_resp = urllib2.urlopen(auth_req)
+        auth_req = urllib.request.Request(auth_url, data=auth_req_data)
+        auth_resp = urllib.request.urlopen(auth_req)
         auth_resp_content = auth_resp.read()
 
         return auth_resp_content;
@@ -39,9 +39,9 @@ def exitUnknown(metadata = None, message = None):
 
 def exit(status = OK, metadata = None, message = None):
     if not metadata == None:
-        print "<json>%s</json>" % json.dumps(metadata, indent = 4)
+        print(("<json>%s</json>" % json.dumps(metadata, indent = 4)))
 
-    print message
+    print(message)
     sys.exit(status);
 
 class clsmetadata(dict):

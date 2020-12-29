@@ -1,3 +1,3 @@
 #!/bin/bash
 
-PYTHONPATH=`pwd` pytest -t tests/
+PYTHONPATH=`pwd` pytest-3 tests/

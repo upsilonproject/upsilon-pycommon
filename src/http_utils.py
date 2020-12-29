@@ -1,14 +1,14 @@
-import httplib
+import http.client
 import socket
 import sys
-from urlparse import urlparse
+from urllib.parse import urlparse
 from logger import error
 
 def getHttpClient(ssl, address, port = 80, timeout = 10):
 	if ssl:
-		httpClient = httplib.HTTPSConnection(address + ":" + str(port), timeout=timeout)
+		httpClient = client.HTTPSConnection(address + ":" + str(port), timeout=timeout)
 	else:
-		httpClient = httplib.HTTPConnection(address + ":" + str(port), timeout=timeout)
+		httpClient = client.HTTPConnection(address + ":" + str(port), timeout=timeout)
 	
 	return httpClient
 
@@ -17,12 +17,12 @@ def getHttpContent(client, url):
 		client.request("GET", url)
 		res = client.getresponse()
 	except socket.error as e:
-		print "Could not even connect. Upsilon may not be running at this address & port."
-		print "Socket error: " + str(e)
+		print("Could not even connect. Upsilon may not be running at this address & port.")
+		print(("Socket error: " + str(e)))
 		sys.exit()
-	except httplib.BadStatusLine as e:
-		print "Connected, but could not parse HTTP response."
-		print "If this server is running SSL, try again with --ssl"
+	except client.BadStatusLine as e:
+		print("Connected, but could not parse HTTP response.")
+		print("If this server is running SSL, try again with --ssl")
 		sys.exit()
 
 	if res.status == 302 and res.getheader('Location'):

@@ -234,5 +234,5 @@ def newChannel(host, queue, exchange = "ex_upsilon"):
     return channel
 
 def bindEverything(channel, queue, exchange = "ex_upsilon"):
-	channel.queue_bind(queue = queue, exchange = exchange, routing_key = '*')
-	channel.queue_bind(queue = queue, exchange = exchange, routing_key = '#')
+    channel.queue_bind(queue = queue, exchange = exchange, routing_key = '*')
+    channel.queue_bind(queue = queue, exchange = exchange, routing_key = '#')

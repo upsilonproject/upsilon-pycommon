@@ -2,7 +2,7 @@
 rm -rf pkg
 mkdir -p pkg
 
-. tests.sh
+#. tests.sh
 
 buildid -n
 buildid -qf rpmmacro -W .upsilon-pycommon.rpmmacro
