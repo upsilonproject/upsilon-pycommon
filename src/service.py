@@ -6,14 +6,14 @@ import json
 # Taken from PyNag.
 OK, WARNING, CRITICAL, UNKNOWN = 0, 1, 2, 3
 
-def req(auth_url, auth_req_data):
+def http_req(auth_url, auth_req_data):
         auth_req = urllib.request.Request(auth_url, data=auth_req_data)
         auth_resp = urllib.request.urlopen(auth_req)
         auth_resp_content = auth_resp.read()
 
         return auth_resp_content;
 
-def reqJson(url, data = None):
+def http_req_json(url, data = None):
         if data == None:
                 data = {}
 
@@ -23,28 +23,9 @@ def easyexec(command):
     p = Popen(command, stdout = PIPE, stderr = PIPE)
     out, err = p.communicate()
 
-    return out.strip(), err
+    return out.decode("utf-8").strip(), err.decode("utf-8").strip()
 
-def exitOk(metadata = None, message = None):
-        exit(OK, metadata, message)
-
-def exitWarning(metadata = None, message = None):
-        exit(WARNING, metadata, message)
-
-def exitCritical(metadata = None, message = None):
-        exit(CRITICAL, metadata, message)
-
-def exitUnknown(metadata = None, message = None):
-        exit(UNKNOWN, metadata, message)
-
-def exit(status = OK, metadata = None, message = None):
-    if not metadata == None:
-        print(("<json>%s</json>" % json.dumps(metadata, indent = 4)))
-
-    print(message)
-    sys.exit(status);
-
-class clsmetadata(dict):
+class ServiceController(dict):
     def __init__(self):
         self['metrics'] = list()
         self['entities'] = list()
@@ -65,3 +46,24 @@ class clsmetadata(dict):
         self['metrics'].append(metric)
 
         return metric
+
+    def exitOk(self, message = None):
+        self.exit(OK, message)
+
+    def exitWarning(self, message = None):
+        self.exit(WARNING, message)
+
+    def exitCritical(self, message = None):
+        self.exit(CRITICAL, message)
+
+    def exitUnknown(self, message = None):
+        self.exit(UNKNOWN, message)
+
+    def exit(self, status = OK, message = None):
+        print(("<json>%s</json>" % json.dumps(self, indent = 4)))
+
+        if message is not None:
+            print(message)
+
+        sys.exit(status);
+

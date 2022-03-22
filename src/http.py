@@ -2,7 +2,7 @@ import http.client
 import socket
 import sys
 from urllib.parse import urlparse
-from logger import error
+import logging
 
 def getHttpClient(ssl, address, port = 80, timeout = 10):
 	if ssl:
@@ -35,7 +35,7 @@ def getHttpContent(client, url):
 		return getHttpContent(client, location);
 
 	if res.status != 200:
-		error("Requested: %s, Expected HTTP 200, got HTTP %d" % (url, res.status))
+		logging.error("Requested: %s, Expected HTTP 200, got HTTP %d" % (url, res.status))
 
 	res = res.read()
 

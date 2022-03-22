@@ -1,6 +1,6 @@
 import pika
 import uuid
-import logger
+import logging
 from threading import Thread
 from time import sleep
 
@@ -37,7 +37,7 @@ class Heartbeater:
     def tick(self):
         while True:
             try: 
-                logger.info("Sending heartbeat with identifier: " + self.identifier)
+                logging.info("Sending heartbeat with identifier: " + self.identifier)
 
                 message = UpsilonMessage("HEARTBEAT");
                 message.routingKey = "upsilon.node.heartbeats"
@@ -49,7 +49,7 @@ class Heartbeater:
 
                 sleep(60)
             except Exception as e:
-                logger.error("Error in heartbeater", e)
+                logging.error("Error in heartbeater", e)
                 
 
     def start(self):
@@ -126,7 +126,7 @@ class Connection():
         if not amqpConnection.is_open:
             raise Exception("Could not open a connection")
 
-        logger.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
+        logging.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
 
         return amqpConnection
 
@@ -137,7 +137,7 @@ class Connection():
         return channel
 
     def onClose(self, channel, reply_code, reply_text):
-        logger.log("AMQP Connection closed on channel " + str(channel) + ' . Reply code: ' + str(reply_code) + '. Reply text: ' + str(reply_text))
+        logging.log("AMQP Connection closed on channel " + str(channel) + ' . Reply code: ' + str(reply_code) + '. Reply text: ' + str(reply_text))
 
     def setPingReply(self, identifier = "???", version = "?.?.?", traits = "???"):
         self.nodeIdentifier = identifier;
@@ -213,11 +213,11 @@ class Connection():
             for callback in self.messageHandlers:
                 callback(channel, delivery, properties, body)
         except Exception as e:
-            logger.error("Exception in callback helper: " + str(e))
+            logging.error("Exception in callback helper: " + str(e))
 
     def startConsuming(self):
         self.channel.start_consuming()
-        logger.debug("finished consuming")
+        logging.debug("finished consuming")
 
 def newChannel(host, queue, exchange = "ex_upsilon"):
     params = pika.ConnectionParameters(host = host)
@@ -226,7 +226,7 @@ def newChannel(host, queue, exchange = "ex_upsilon"):
     if not amqpConnection.is_open:
         raise Exception("Could not open a connection")
     
-    logger.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
+    logging.log("AMQP Connection open to " + host + ' using the ' + exchange + ' exchange')
     
     channel = amqpConnection.channel();
     channel.queue_declare(queue = queue, durable = False, auto_delete = True)
