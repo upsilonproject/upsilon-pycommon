@@ -26,9 +26,12 @@ def easyexec(command):
     return out.decode("utf-8").strip(), err.decode("utf-8").strip()
 
 class ServiceController(dict):
+    defaultExitStatus = OK
+
     def __init__(self):
         self['metrics'] = list()
         self['entities'] = list()
+        self['messages'] = list()
 
     def addSubresult(self, name, karma = "GOOD", value = "", comment = None):
         return self.addEntity(name, "subresult", karma, value, comment);
@@ -47,6 +50,12 @@ class ServiceController(dict):
 
         return metric
 
+    def addMessageWarning(self, message=None):
+        if WARNING > self.defaultExitStatus:
+            self.defaultExitStatus = WARNING
+
+        self['messages'].append(message)
+
     def exitOk(self, message = None):
         self.exit(OK, message)
 
@@ -59,11 +68,14 @@ class ServiceController(dict):
     def exitUnknown(self, message = None):
         self.exit(UNKNOWN, message)
 
-    def exit(self, status = OK, message = None):
+    def exit(self, status = None, message = None):
         print(("<json>%s</json>" % json.dumps(self, indent = 4)))
 
         if message is not None:
             print(message)
 
-        sys.exit(status);
+        if status == None:
+            status = self.defaultExitStatus
+
+        sys.exit(status)
 
